@@ -43,5 +43,4 @@ public class Shop extends Auditable {
         @OneToMany
         @JoinColumn(name = "id")
         List<ShopProduct> items_in_shop = new ArrayList<>();
-
 }

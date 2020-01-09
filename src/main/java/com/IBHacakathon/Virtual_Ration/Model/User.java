@@ -37,8 +37,8 @@ public class User extends Auditable{
 
     @ManyToMany
     @JoinTable( name = "user_shop",
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "shop_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "shop_id", referencedColumnName = "id")
     )
     List<Shop> shops_he_hasbeenRegisteredTo = new ArrayList<>();
 
