@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "usershops")
-public class UserShop {
+public class UserShop extends Auditable {
 
     @NotNull
     Long userId;
