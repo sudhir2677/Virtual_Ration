@@ -1,13 +1,11 @@
 package com.IBHacakathon.Virtual_Ration.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,19 +18,28 @@ public class User extends Auditable{
 
     String name;
     String email;
+    String password;
     Integer noOfFamilyMember;
+
+    @Enumerated(EnumType.STRING)
     CardType cardType;
     String address;
     Double longitute;
     Double latitude;
 
-    @OneToOne(mappedBy = "id")
-    Shop shop_registered_to;
+    /*@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
+    @JsonIgnore
+    Shop shop_registered_to;*/
 
     @OneToOne(mappedBy = "user")
     Order ration_ordered;
 
-    @OneToMany(mappedBy = "")
+    @ManyToMany
+    @JoinTable( name = "user_shop",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "shop_id", referencedColumnName = "id")
+    )
     List<Shop> shops_he_hasbeenRegisteredTo = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")

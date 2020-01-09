@@ -1,12 +1,10 @@
 package com.IBHacakathon.Virtual_Ration.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -21,10 +19,9 @@ public class Shop extends Auditable {
         @NotBlank
         String address;
 
-        @OneToOne
+        @OneToOne(mappedBy = "shop")
         Vendor vendor;
         //String GST_no;
-        ShopStatus open_closed;
         @NotNull
         int storageCapacity;
         @NotNull
@@ -32,10 +29,19 @@ public class Shop extends Auditable {
         @NotNull
         Double longitude;
         @NotNull
+        @Enumerated(EnumType.STRING)
         ShopStatus shopStatus;
 
-        @OneToMany(mappedBy = "")
+        @ManyToMany
+        @JsonBackReference
+        @JoinTable( name = "user_shop",
+                joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+                inverseJoinColumns = @JoinColumn(name = "shop_id", referencedColumnName = "id")
+        )
         List<User> userList = new ArrayList<>();
+
+        @OneToMany
+        @JoinColumn(name = "id")
         List<ShopProduct> items_in_shop = new ArrayList<>();
 
 }
