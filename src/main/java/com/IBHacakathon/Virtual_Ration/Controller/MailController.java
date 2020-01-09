@@ -1,4 +1,4 @@
-package com.Sutherland.Game.Controller;
+package com.IBHacakathon.Virtual_Ration.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;

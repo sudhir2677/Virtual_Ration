@@ -1,4 +1,4 @@
-package com.Sutherland.Game.Model;
+package com.IBHacakathon.Virtual_Ration.Model;
 
 import lombok.Getter;
 import lombok.Setter;

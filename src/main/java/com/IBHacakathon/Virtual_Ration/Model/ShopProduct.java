@@ -5,19 +5,13 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "shopproduct")
 @Getter
 @Setter
-public class Order extends  Auditable {
-
-    @NotNull
-    Long userId;
-    @NotNull
+public class ShopProduct extends Auditable{
     Long shopId;
-    @NotNull
-    DeliveryType deliveryType;
-
+    String productName;
+    int quantity;
 }

@@ -1,4 +1,4 @@
-package com.Sutherland.Game.Model;
+package com.IBHacakathon.Virtual_Ration.Model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
