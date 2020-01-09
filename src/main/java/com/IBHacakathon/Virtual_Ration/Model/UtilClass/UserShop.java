@@ -1,4 +1,6 @@
-package com.IBHacakathon.Virtual_Ration.Model;
+package com.IBHacakathon.Virtual_Ration.Model.UtilClass;
+
+import com.IBHacakathon.Virtual_Ration.Model.Auditable;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

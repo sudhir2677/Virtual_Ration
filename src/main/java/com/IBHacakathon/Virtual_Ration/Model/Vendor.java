@@ -21,6 +21,6 @@ public class Vendor extends Auditable {
     @NotBlank
     String address;
     @NotNull
-    Long shopId;
+    Shop shop;
 
 }

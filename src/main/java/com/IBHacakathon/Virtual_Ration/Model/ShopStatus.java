@@ -1,6 +1,6 @@
 package com.IBHacakathon.Virtual_Ration.Model;
 
-public enum Status {
+public enum ShopStatus {
     OPEN,
     CLOSE;
 }

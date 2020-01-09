@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class OrderedItem extends Auditable {
 
     @NotBlank
-    Long orderId;
+    Order order;
     @NotBlank
     String productName;
     @NotNull

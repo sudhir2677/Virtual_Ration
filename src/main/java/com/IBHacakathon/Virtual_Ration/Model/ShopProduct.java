@@ -11,7 +11,6 @@ import javax.persistence.Table;
 @Getter
 @Setter
 public class ShopProduct extends Auditable{
-    Long shopId;
-    String productName;
+    Category category;
     int quantity;
 }
