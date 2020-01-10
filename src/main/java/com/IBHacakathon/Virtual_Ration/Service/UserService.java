@@ -77,4 +77,15 @@ public class UserService {
         mailService.sendMail(newUser.getEmail(), subject, message);
         return 1;
     }
+
+    public User addUser(User user) {
+        User newUser = new User();
+        newUser.setName(user.getName());
+        newUser.setEmail(user.getEmail());
+        newUser.setNoOfFamilyMember(user.getNoOfFamilyMember());
+        newUser.setRationCard(user.getRationCard());
+        newUser.setCardType(user.getCardType());
+        userRepository.save(newUser);
+        return user;
+    }
 }
