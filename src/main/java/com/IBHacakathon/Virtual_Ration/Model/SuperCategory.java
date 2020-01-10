@@ -16,6 +16,7 @@ public class SuperCategory extends Auditable{
     Double priceApl;
     int quantity;
 
+    public SuperCategory(){}
     public SuperCategory(String itemName, Double priceBpl, Double priceApl, int quantity) {
         this.itemName = itemName;
         this.priceBpl = priceBpl;
