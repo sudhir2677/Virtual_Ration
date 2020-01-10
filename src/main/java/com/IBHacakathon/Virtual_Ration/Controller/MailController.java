@@ -1,6 +1,10 @@
 package com.IBHacakathon.Virtual_Ration.Controller;
 
+import com.IBHacakathon.Virtual_Ration.Utility.MailService;
+import com.IBHacakathon.Virtual_Ration.Utility.RandomString;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,20 +19,21 @@ import java.util.Random;
 @RestController
 @RequestMapping("/mail")
 public class MailController {
+
     private String Otp;
+
     @Autowired
-    private JavaMailSender javaMailSender;
+    private MailService mailService;// = new MailService();
+
+    @Value("${otp.length}")
+    int otplength;
 
     @GetMapping("/getOtp/{mailId}")
     public boolean validateMail(@PathVariable(value = "mailId") String mailId){
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(mailId);
-
-        msg.setSubject("OTP from RATION India");
-        Otp = generateOtp();
-        msg.setText("Hi your OTP is "+ Otp);
-        javaMailSender.send(msg);
-        return true;
+        String subject = "OTP from RATION India";
+        Otp = RandomString.generateString(otplength);
+        String message = "Hi your OTP is "+ Otp;
+        return mailService.sendMail(mailId,subject,message);
     }
 
     @GetMapping("/validate/{otp}")
@@ -41,26 +46,4 @@ public class MailController {
         }
     }
 
-    public String generateOtp(){
-        List<Character> alphabet = generator();
-        StringBuilder sb = new StringBuilder();
-        Random random = new Random();
-        for(int i=0;i<5;i++){
-           sb.append(alphabet.get(random.nextInt(alphabet.size())));
-        }
-         return sb.toString();
-    }
-    public List<Character> generator(){
-        List<Character> list = new ArrayList<>();
-        for(int i='a';i<='z';i++){
-            list.add((char)i);
-        }
-        for(int i='A';i<='Z';i++){
-            list.add((char)i);
-        }
-        for(int i=0;i<=9;i++){
-            list.add((char)(i+'0'));
-        }
-        return list;
-    }
 }

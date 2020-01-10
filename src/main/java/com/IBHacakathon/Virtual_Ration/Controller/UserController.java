@@ -5,6 +5,7 @@ import com.IBHacakathon.Virtual_Ration.Model.User;
 import com.IBHacakathon.Virtual_Ration.Repository.UserRepository;
 import com.IBHacakathon.Virtual_Ration.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +16,6 @@ import javax.servlet.http.HttpSession;
 public class UserController {
 
     //for login
-    @Autowired
-    UserRepository userRepository;
     @Autowired
     UserService userService;
 
@@ -57,4 +56,8 @@ public class UserController {
     }
 
 
+    @PostMapping("/user/register")
+    public Integer registerUser(@RequestBody User user){
+        return userService.register(user);
+    }
 }

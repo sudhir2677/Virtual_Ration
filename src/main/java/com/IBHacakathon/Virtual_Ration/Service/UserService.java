@@ -3,7 +3,10 @@ package com.IBHacakathon.Virtual_Ration.Service;
 import com.IBHacakathon.Virtual_Ration.Exception.ApiException;
 import com.IBHacakathon.Virtual_Ration.Model.User;
 import com.IBHacakathon.Virtual_Ration.Repository.UserRepository;
+import com.IBHacakathon.Virtual_Ration.Utility.MailService;
+import com.IBHacakathon.Virtual_Ration.Utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,9 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    MailService mailService;
 
     public User userLogin(String email,String password) throws ApiException{
         User user = userRepository.findByEmailAndPassword(email,password);
@@ -50,5 +56,25 @@ public class UserService {
         user.setName(name);
         userRepository.save(user);
         return user;
+    }
+
+    public Integer register(User user) {
+        User newUser = userRepository.findByRationCard(user.getRationCard());
+        if(newUser == null)return 0;
+        if(!newUser.getEmail().equals(user.getEmail())){
+            return 0;
+        }
+        newUser.setIsRegisteredUser(true);
+
+        int passwordLength = 8;
+        String password = RandomString.generateString(passwordLength);
+
+        newUser.setPassword(password);
+        userRepository.save(newUser);
+
+        String subject = "Password for PDS virtual ration";
+        String message = "Thank you for login <br> Your new Generated password is: "+password;
+        mailService.sendMail(newUser.getEmail(), subject, message);
+        return 1;
     }
 }

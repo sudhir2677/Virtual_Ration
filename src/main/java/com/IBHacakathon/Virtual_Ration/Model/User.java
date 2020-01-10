@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +18,12 @@ import java.util.List;
 public class User extends Auditable{
 
     String name;
+    String rationCard;
+    @Email
     String email;
     String password;
     Integer noOfFamilyMember;
+    Boolean isRegisteredUser = false;
 
     @Enumerated(EnumType.STRING)
     CardType cardType;
