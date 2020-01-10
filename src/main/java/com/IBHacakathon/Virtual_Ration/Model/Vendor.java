@@ -20,6 +20,9 @@ public class Vendor extends Auditable {
     String name;
     @NotBlank
     String emailId;
+
+    String password;
+
     @NotBlank
     String address;
 
