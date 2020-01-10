@@ -34,12 +34,22 @@ public class VendorService {
         return shop1.getUserList();
     }
 
-    public Vendor vendorLogin(String emailId, String password) throws ApiException{
+    public Vendor vendorLogin(String emailId, String password) throws ApiException {
         Vendor vendor = vendorRepository.findByEmailAndPassword(emailId, password);
         //    User user = userRepository.findById(1L).get();
-        if(Objects.isNull(vendor)){
+        if (Objects.isNull(vendor)) {
             throw new ApiException("User Not Found");
         }
         return vendor;
+
+    }
+    public Vendor addVendor(Vendor vendor) {
+        Vendor newVendor = new Vendor();
+        newVendor.setName(vendor.getName());
+        newVendor.setEmailId(vendor.getEmailId());
+        Shop newShop = new Shop();
+
+
+        return newVendor;
     }
 }
