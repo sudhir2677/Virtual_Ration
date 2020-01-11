@@ -12,7 +12,8 @@ import javax.persistence.Table;
 @Getter
 @Setter
 public class ShopProduct extends Auditable{
-    @JoinColumn(name = "itemName")
-    Category category;
+    String itemName;
+    Double priceBpl;
+    Double priceApl;
     int quantity;
 }

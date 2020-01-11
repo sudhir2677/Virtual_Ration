@@ -16,18 +16,17 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class Vendor extends Auditable {
 
-    @NotBlank
+
     String name;
-    @NotBlank
+
     String emailId;
 
     String password;
 
-    @NotBlank
     String address;
 
     @OneToOne
-    @JoinColumn(name = "vendor")
+    @JoinColumn(name = "shop_id", nullable = false)
     Shop shop;
 
 }

@@ -40,4 +40,5 @@ public abstract class Auditable implements Serializable {
     @Getter
     @Setter
     private Date updatedAt = new Date();
+
 }

@@ -8,7 +8,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "shops")
@@ -16,19 +18,20 @@ import java.util.List;
 @Setter
 public class Shop extends Auditable {
 
-        @NotBlank
+
         String address;
 
-        @OneToOne(mappedBy = "shop")
+        @OneToOne(fetch = FetchType.LAZY,
+                cascade =  CascadeType.ALL,
+                mappedBy = "shop")
         Vendor vendor;
-        //String GST_no;
-        @NotNull
+
         int storageCapacity;
-        @NotNull
+
         Double latitude;
-        @NotNull
+
         Double longitude;
-        @NotNull
+
         @Enumerated(EnumType.STRING)
         ShopStatus shopStatus;
 
@@ -43,4 +46,11 @@ public class Shop extends Auditable {
         @OneToMany
         @JoinColumn(name = "id")
         List<ShopProduct> items_in_shop = new ArrayList<>();
+
+        /*@ElementCollection(fetch = FetchType.LAZY)
+        @CollectionTable(name = "shop_product", joinColumns = @JoinColumn(name = "id"))
+        @AttributeOverrides({
+                @AttributeOverride(name = "product_id", column = @Column(name = "id"))
+        })
+        private Set<ShopProduct> addresses = new HashSet<>();*/
 }
