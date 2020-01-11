@@ -1,7 +1,9 @@
 package com.IBHacakathon.Virtual_Ration.Service;
 
 import com.IBHacakathon.Virtual_Ration.Exception.ApiException;
+import com.IBHacakathon.Virtual_Ration.Model.Order;
 import com.IBHacakathon.Virtual_Ration.Model.User;
+import com.IBHacakathon.Virtual_Ration.Repository.OrderRepository;
 import com.IBHacakathon.Virtual_Ration.Repository.UserRepository;
 import com.IBHacakathon.Virtual_Ration.Utility.MailService;
 import com.IBHacakathon.Virtual_Ration.Utility.RandomString;
@@ -10,7 +12,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 @Service
 public class UserService {
@@ -20,6 +26,9 @@ public class UserService {
 
     @Autowired
     MailService mailService;
+
+    @Autowired
+    OrderRepository orderRepository;
 
     public User userLogin(String email,String password) throws ApiException{
         User user = userRepository.findByEmailAndPassword(email,password);
@@ -88,4 +97,21 @@ public class UserService {
         userRepository.save(newUser);
         return user;
     }
+
+    public Boolean checkIsRationBookedThisMonth(Long id){
+        User user = userRepository.findById(id).get();
+        List<Order> orders = orderRepository.findAllByUser(user);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        String todayMonth = DateTimeFormatter.ofPattern("MMYYYY", Locale.ENGLISH).format(localDateTime);
+        for (Order order: orders) {
+            String lastDate = DateTimeFormatter.ofPattern("MMYYYY", Locale.ENGLISH).format((TemporalAccessor)order.getCreatedAt());
+            if(lastDate.equals(todayMonth)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public 
+
 }

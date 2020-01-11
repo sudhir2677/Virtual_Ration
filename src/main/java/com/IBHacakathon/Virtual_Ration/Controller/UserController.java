@@ -60,4 +60,10 @@ public class UserController {
     public Integer registerUser(@RequestBody User user){
         return userService.register(user);
     }
+
+    @GetMapping("/user/isRationBooked")
+    public Boolean bookisRationBooked(HttpSession session){
+        Long id = (long)session.getAttribute("userId");
+        return userService.checkIsRationBookedThisMonth(id);
+    }
 }
