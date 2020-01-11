@@ -43,14 +43,14 @@ public class Shop extends Auditable {
         )
         List<User> userList = new ArrayList<>();
 
-        @OneToMany
+        /*@OneToMany
         @JoinColumn(name = "id")
-        List<ShopProduct> items_in_shop = new ArrayList<>();
+        List<ShopProduct> items_in_shop = new ArrayList<>();*/
 
-        /*@ElementCollection(fetch = FetchType.LAZY)
-        @CollectionTable(name = "shop_product", joinColumns = @JoinColumn(name = "id"))
-        @AttributeOverrides({
+        /*@AttributeOverrides({
                 @AttributeOverride(name = "product_id", column = @Column(name = "id"))
-        })
-        private Set<ShopProduct> addresses = new HashSet<>();*/
+        })*/
+        @ElementCollection(fetch = FetchType.LAZY)
+        @CollectionTable(name = "shop_product", joinColumns = @JoinColumn(name = "shop_id"))
+        private Set<ShopProduct> items_in_shop = new HashSet<>();
 }

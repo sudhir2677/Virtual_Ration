@@ -63,6 +63,7 @@ public class VendorService {
 
         shopProductRepository.save(product);
 
+
         shop.getItems_in_shop().add(product);
         shopRepository.save(shop);
         return shopProduct;
