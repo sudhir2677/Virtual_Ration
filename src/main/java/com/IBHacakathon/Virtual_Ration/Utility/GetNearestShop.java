@@ -8,16 +8,15 @@ import java.util.List;
 @Service
 public class GetNearestShop {
 
-
     public Shop getShop(Double latitude, Double longitude, List<Shop> shops) {
         Shop nearestShop = new Shop();
         Double minDistance = Double.MAX_VALUE;
         for (Shop shop:shops) {
-          Double localMin = distance(latitude,longitude,shop.getLatitude(),shop.getLongitude());
-          if(localMin < minDistance){
-              minDistance = localMin;
-              nearestShop = shop;
-          }
+            Double localMin = distance(latitude,longitude,shop.getLatitude(),shop.getLongitude());
+            if(localMin < minDistance){
+                minDistance = localMin;
+                nearestShop = shop;
+            }
         }
         return nearestShop;
     }
@@ -42,4 +41,5 @@ public class GetNearestShop {
     private double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
     }
+
 }

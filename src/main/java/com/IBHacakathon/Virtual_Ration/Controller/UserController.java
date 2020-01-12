@@ -70,7 +70,7 @@ public class UserController {
     }
 
     @GetMapping("/user/isRationBooked")
-    public Boolean bookisRationBooked(HttpSession session){
+    public Boolean isRationBooked(HttpSession session){
         Long id = (long)session.getAttribute("userId");
         return userService.checkIsRationBookedThisMonth(id);
     }
