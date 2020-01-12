@@ -38,6 +38,7 @@ public class UserController {
     @PutMapping("/user/changeAddress")
     public User userChangeAddress(@RequestBody User user, HttpSession session) throws ApiException {
          Long id = (Long)session.getAttribute("userId");
+         if(id == null)return  null;
          return userService.changeAddress(user.getAddress(),id);
     }
 
@@ -46,7 +47,8 @@ public class UserController {
     // pass latitude and longitude in object
     @PutMapping("/user/coordinates")
     public User userChangeCoordinates(@RequestBody User user , HttpSession session) throws ApiException{
-
+        Long id = (Long)session.getAttribute("userId");
+        if(id == null)return  null;
         return userService.changeCoordinates(user.getLatitude(),user.getLongitute(),Long.parseLong((String)session.getAttribute("userId")));
     }
 
@@ -57,7 +59,11 @@ public class UserController {
         return "logout successfully!!";
     }
 
-
+    /*
+    * User register himself and got password for the same in email.
+    *
+    * User input is Ration_card and email.
+    * */
     @PostMapping("/user/register")
     public Integer registerUser(@RequestBody User user){
         return userService.register(user);
@@ -69,6 +75,12 @@ public class UserController {
         return userService.checkIsRationBookedThisMonth(id);
     }
 
+    @GetMapping("/user/registerWithShop")
+    public User registerWithShop(HttpSession session){
+        Long id = (long)session.getAttribute("userId");
+        return userService.registerWithShop(id);
+    }
+
     @GetMapping("/user/bookRation/{diliveryType}")
     public Order bookRation(@PathVariable("diliveryType") DeliveryType diliveryType, HttpSession session){
         Long id = (long)session.getAttribute("userId");
@@ -76,5 +88,14 @@ public class UserController {
             return null;
         }
         return userService.bookRation(id, diliveryType);
+    }
+
+    @GetMapping("/user/getTotalBill")
+    public Order getTotalBill(HttpSession session){
+        Long id = (long)session.getAttribute("userId");
+        if(id == null){
+            return null;
+        }
+        return userService.getBill(id);
     }
 }

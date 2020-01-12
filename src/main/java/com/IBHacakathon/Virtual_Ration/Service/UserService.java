@@ -4,7 +4,9 @@ import com.IBHacakathon.Virtual_Ration.Exception.ApiException;
 import com.IBHacakathon.Virtual_Ration.Model.*;
 import com.IBHacakathon.Virtual_Ration.Repository.OrderItemRepository;
 import com.IBHacakathon.Virtual_Ration.Repository.OrderRepository;
+import com.IBHacakathon.Virtual_Ration.Repository.ShopRepository;
 import com.IBHacakathon.Virtual_Ration.Repository.UserRepository;
+import com.IBHacakathon.Virtual_Ration.Utility.GetNearestShop;
 import com.IBHacakathon.Virtual_Ration.Utility.MailService;
 import com.IBHacakathon.Virtual_Ration.Utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,12 @@ public class UserService {
 
     @Autowired
     OrderItemRepository orderItemRepository;
+
+    @Autowired
+    ShopRepository shopRepository;
+
+    @Autowired
+    GetNearestShop getNearestShop;
 
     public User userLogin(String email,String password) throws ApiException{
         User user = userRepository.findByEmailAndPassword(email,password);
@@ -63,14 +71,6 @@ public class UserService {
         return user;
     }
 
-    public User addUser(String name, Integer familyMember) {
-        User user = new User();
-        user.setNoOfFamilyMember(familyMember);
-        user.setName(name);
-        userRepository.save(user);
-        return user;
-    }
-
     public Integer register(User user) {
         User newUser = userRepository.findByRationCard(user.getRationCard());
         if(newUser == null)return 0;
@@ -86,7 +86,7 @@ public class UserService {
         userRepository.save(newUser);
 
         String subject = "Password for PDS virtual ration";
-        String message = "Thank you for login <br> Your new Generated password is: "+password;
+        String message = "Thank you for login <br/> Your new Generated password is: "+password;
         mailService.sendMail(newUser.getEmail(), subject, message);
         return 1;
     }
@@ -114,6 +114,25 @@ public class UserService {
             }
         }
         return false;
+    }
+
+    /*public User addUser(String name, Integer familyMember) {
+        User user = new User();
+        user.setNoOfFamilyMember(familyMember);
+        user.setName(name);
+        userRepository.save(user);
+        return user;
+    }*/
+
+    public User registerWithShop(Long id) {
+        User user = userRepository.findById(id).get();
+        List<Shop> shop = shopRepository.findAll();
+        Double latitude = user.getLatitude();
+        Double longitude = user.getLongitute();
+        Shop nearestShop = getNearestShop.getShop(latitude,longitude,shop);
+        user.getShops_he_hasbeenRegisteredTo().add(nearestShop);
+        userRepository.save(user);
+        return user;
     }
 
 
@@ -153,5 +172,12 @@ public class UserService {
         user.getOrders_he_has_done().add(order);
         userRepository.save(user);
         return order;
+    }
+
+    // get it working
+    public Order getBill(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        List<Order> order = user.getOrders_he_has_done();
+        return null;
     }
 }

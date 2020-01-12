@@ -18,7 +18,7 @@ public class Order extends  Auditable {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "ration_ordered")
-    @JsonBackReference
+    //@JsonBackReference
     User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
