@@ -1,6 +1,8 @@
 package com.IBHacakathon.Virtual_Ration.Controller;
 
 import com.IBHacakathon.Virtual_Ration.Exception.ApiException;
+import com.IBHacakathon.Virtual_Ration.Model.DeliveryType;
+import com.IBHacakathon.Virtual_Ration.Model.Order;
 import com.IBHacakathon.Virtual_Ration.Model.User;
 import com.IBHacakathon.Virtual_Ration.Repository.UserRepository;
 import com.IBHacakathon.Virtual_Ration.Service.UserService;
@@ -65,5 +67,14 @@ public class UserController {
     public Boolean bookisRationBooked(HttpSession session){
         Long id = (long)session.getAttribute("userId");
         return userService.checkIsRationBookedThisMonth(id);
+    }
+
+    @GetMapping("/user/bookRation/{diliveryType}")
+    public Order bookRation(@PathVariable("diliveryType") DeliveryType diliveryType, HttpSession session){
+        Long id = (long)session.getAttribute("userId");
+        if(id == null){
+            return null;
+        }
+        return userService.bookRation(id, diliveryType);
     }
 }

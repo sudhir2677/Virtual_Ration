@@ -1,8 +1,8 @@
 package com.IBHacakathon.Virtual_Ration.Service;
 
 import com.IBHacakathon.Virtual_Ration.Exception.ApiException;
-import com.IBHacakathon.Virtual_Ration.Model.Order;
-import com.IBHacakathon.Virtual_Ration.Model.User;
+import com.IBHacakathon.Virtual_Ration.Model.*;
+import com.IBHacakathon.Virtual_Ration.Repository.OrderItemRepository;
 import com.IBHacakathon.Virtual_Ration.Repository.OrderRepository;
 import com.IBHacakathon.Virtual_Ration.Repository.UserRepository;
 import com.IBHacakathon.Virtual_Ration.Utility.MailService;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -29,6 +30,9 @@ public class UserService {
 
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
+    OrderItemRepository orderItemRepository;
 
     public User userLogin(String email,String password) throws ApiException{
         User user = userRepository.findByEmailAndPassword(email,password);
@@ -112,6 +116,42 @@ public class UserService {
         return false;
     }
 
-    public 
 
+    public Order bookRation(Long id, DeliveryType diliveryType) {
+        User user = userRepository.findById(id).orElse(null);
+        Order order = new Order();
+
+        order.setDeliveryType(diliveryType);
+
+        OrderedItem rice = new OrderedItem();
+        rice.setPrice((user.getCardType() == CardType.APL)?10.0:5.0);
+        rice.setQuantity((user.getCardType() == CardType.APL)?10.0:20.0);
+        rice.setProductName("rice");
+        orderItemRepository.save(rice);
+
+        OrderedItem wheat = new OrderedItem();
+        wheat.setPrice((user.getCardType() == CardType.APL)?10.0:5.0);
+        wheat.setQuantity((user.getCardType() == CardType.APL)?10.0:20.0);
+        wheat.setProductName("wheat");
+        orderItemRepository.save(wheat);
+
+        OrderedItem sugar = new OrderedItem();
+        sugar.setPrice((user.getCardType() == CardType.APL)?20.0:10.0);
+        sugar.setQuantity((user.getCardType() == CardType.APL)?10.0:20.0);
+        sugar.setProductName("sugar");
+        orderItemRepository.save(sugar);
+
+        List<OrderedItem> orderItemList = new ArrayList<>();
+        orderItemList.add(rice);
+        orderItemList.add(wheat);
+        orderItemList.add(sugar);
+
+        order.setOrderedItemList(orderItemList);
+
+        order.setUser(user);
+        orderRepository.save(order);
+        user.getOrders_he_has_done().add(order);
+        userRepository.save(user);
+        return order;
+    }
 }

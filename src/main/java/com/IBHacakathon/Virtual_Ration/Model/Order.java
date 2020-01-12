@@ -21,8 +21,7 @@ public class Order extends  Auditable {
     @JsonBackReference
     User user;
 
-    @OneToMany
-    @JoinColumn(name = "id")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     List<OrderedItem> orderedItemList = new ArrayList<>();
 
     @NotNull
